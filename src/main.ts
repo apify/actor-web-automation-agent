@@ -89,22 +89,8 @@ const executor = await initializeAgentExecutorWithOptions(tools, chat, {
     agentArgs: {
         prefix: initialContext.content,
     },
-    verbose: false,
+    verbose: log.getLevel() >= log.LEVELS.DEBUG,
 });
-
-// const callbackConfig = [
-//     {
-//         handleAgentAction(action, runId) {
-//             webAgentLog.info('handleAgentAction', { action, runId });
-//         },
-//         handleAgentEnd(action, runId) {
-//             webAgentLog.info('handleAgentEnd', { action, runId });
-//         },
-//         handleToolEnd(output, runId) {
-//             webAgentLog.info('handleToolEnd', { output, runId });
-//         },
-//     },
-// ];
 
 const finalInstructions = startUrl
     ? `Open url ${startUrl} and continue with ${instructions}`
