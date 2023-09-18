@@ -1,0 +1,12 @@
+{
+	"actorSpecification": 1,
+	"name": "web-automation-agent",
+	"title": "Web Automation Agent",
+	"description": "Web Automation Agent use OpenAI to browse web using natural language prompt.",
+	"version": "0.0",
+	"meta": {
+		"templateId": "ts-crawlee-puppeteer-chrome"
+	},
+	"input": "./input_schema.json",
+	"dockerfile": "./Dockerfile"
+}
