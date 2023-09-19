@@ -1,12 +1,16 @@
 import { Actor, log } from 'apify';
 import { launchPuppeteer, sleep } from 'crawlee';
-import { initializeAgentExecutorWithOptions } from 'langchain/agents';
+import { OpenAIAgent } from 'langchain/agents';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { AgentStep } from 'langchain/schema';
 import { DynamicStructuredTool } from 'langchain/tools';
+import { BufferMemory } from 'langchain/memory';
+import { WebAgentExecutor } from './agent_executor.js';
 import { Input } from './input.js';
 import { ACTION_LIST } from './agent_actions.js';
 import { createServer } from './screenshotter_server.js';
 import { webAgentLog } from './utils.js';
+import { HTML_CURRENT_PAGE_PREFIX } from './consts.js';
 
 const LIVE_VIEW_URL = process.env.ACTOR_WEB_SERVER_URL ? process.env.ACTOR_WEB_SERVER_URL : 'http://localhost:4000';
 
@@ -78,16 +82,32 @@ const tools = ACTION_LIST.map((action) => {
     });
 });
 
-const chat = new ChatOpenAI({
+const llm = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
     modelName: 'gpt-4-32k',
     temperature: 0,
 });
 
-const executor = await initializeAgentExecutorWithOptions(tools, chat, {
-    agentType: 'openai-functions',
-    agentArgs: {
+const executor = WebAgentExecutor.fromAgentAndTools({
+    tags: ['openai-functions'],
+    agent: OpenAIAgent.fromLLMAndTools(llm, tools, {
         prefix: initialContext.content,
+    }),
+    tools,
+    memory: new BufferMemory({
+        returnMessages: true,
+        memoryKey: 'chat_history',
+        inputKey: 'input',
+        outputKey: 'output',
+    }),
+    updatePreviousStepMethod: (previousStep: AgentStep) => {
+        if (previousStep?.observation) {
+            return {
+                ...previousStep,
+                observation: previousStep.observation.replace(new RegExp(`${HTML_CURRENT_PAGE_PREFIX} .*`), 'HTML of page was omitted'),
+            } as AgentStep;
+        }
+        return previousStep;
     },
     verbose: log.getLevel() >= log.LEVELS.DEBUG,
 });
