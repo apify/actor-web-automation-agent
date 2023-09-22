@@ -20,7 +20,7 @@ or programmatically in a JSON object using the [Apify API](https://apify.com/doc
 
 ### Start URL
 
-The **Start URL** (`startUrl) field represents the initial page URL that the Actor will visit.
+The **Start URL** (`startUrl`) field represents the initial page URL that the Actor will visit.
 
 ### Instructions
 
