@@ -84,7 +84,7 @@ const tools = ACTION_LIST.map((action) => {
 
 const llm = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
-    modelName: 'gpt-4-32k',
+    modelName: 'gpt-3.5-turbo-16k',
     temperature: 0,
 });
 
