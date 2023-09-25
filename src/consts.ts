@@ -16,3 +16,5 @@ export const WHITELIST_ATTRIBUTES_WEB_AUTOMATION = [
     'href',
     'alt',
 ];
+
+export const HTML_CURRENT_PAGE_PREFIX = 'HTML of current page:' as const;

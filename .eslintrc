@@ -9,7 +9,8 @@
         "@apify/eslint-config-ts"
     ],
     "rules": {
-        "@typescript-eslint/ban-ts-comment": "warn"
+        "@typescript-eslint/ban-ts-comment": "warn",
+        "max-classes-per-file": "warn"
     },
     "parserOptions": {
         "project": "./tsconfig.json",

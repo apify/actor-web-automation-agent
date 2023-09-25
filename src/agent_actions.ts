@@ -3,7 +3,7 @@ import { utils } from 'crawlee';
 import { ElementHandle, type Page } from 'puppeteer';
 import { z } from 'zod';
 import { shrinkHtmlForWebAutomation, tagAllElementsOnPage } from './shrink_html.js';
-import { UNIQUE_ID_ATTRIBUTE } from './consts.js';
+import { HTML_CURRENT_PAGE_PREFIX, UNIQUE_ID_ATTRIBUTE } from './consts.js';
 import { maybeShortsTextByTokenLength } from './tokens.js';
 import { webAgentLog } from './utils.js';
 
@@ -31,7 +31,7 @@ export async function goToUrl(context: AgentBrowserContext, { url }: { url: stri
     await tagAllElementsOnPage(page, UNIQUE_ID_ATTRIBUTE);
     const minHtml = await shrinkHtmlForWebAutomation(page);
     webAgentLog.info(`Went to page, current URL: ${page.url()}`, { url, htmlLength: minHtml.length });
-    return maybeShortsTextByTokenLength(`Previous action was: go_to_url, HTML of current page: ${minHtml}`, 10000);
+    return maybeShortsTextByTokenLength(`Previous action was: go_to_url, ${HTML_CURRENT_PAGE_PREFIX} ${minHtml}`, 10000);
 }
 
 export async function clickElement(page: Page, element: ElementHandle) {
@@ -83,7 +83,7 @@ export async function clickLink(context: AgentBrowserContext, { text, gid }: { t
     const minHtml = await shrinkHtmlForWebAutomation(page);
 
     webAgentLog.info(`Clicked on link, current URL: ${page.url()}`, { text, gid, linkFoundByGidSelector, htmlLength: minHtml.length });
-    return maybeShortsTextByTokenLength(`Previous action was: click_element, HTML of current page: ${minHtml}`, 10000);
+    return maybeShortsTextByTokenLength(`Previous action was: click_element, ${HTML_CURRENT_PAGE_PREFIX} ${minHtml}`, 10000);
 }
 
 export async function fillForm(context: AgentBrowserContext, { formData }: { formData: { gid: number, value: string }[]}) {
@@ -95,7 +95,7 @@ export async function fillForm(context: AgentBrowserContext, { formData }: { for
             await element.type(value.trim());
         }
     }
-    webAgentLog.info('Form filled');
+    webAgentLog.info('Form was filled with values', { formData });
     const submitButton = await page.$('button[type="submit"]');
     // If the submit button is not presented, submit the form by pressing enter.
     if (submitButton) {
@@ -108,7 +108,7 @@ export async function fillForm(context: AgentBrowserContext, { formData }: { for
     await tagAllElementsOnPage(page, UNIQUE_ID_ATTRIBUTE);
     const minHtml = await shrinkHtmlForWebAutomation(page);
     webAgentLog.info(`Form submitted, current URL: ${page.url()}`, { htmlLength: minHtml.length });
-    return maybeShortsTextByTokenLength(`Previous action was: fill_form_and_submit, HTML of current page: ${minHtml}`, 10000);
+    return maybeShortsTextByTokenLength(`Previous action was: fill_form_and_submit, ${HTML_CURRENT_PAGE_PREFIX} ${minHtml}`, 10000);
 }
 
 export async function extractData(context: AgentBrowserContext, { attributesToExtract }: { attributesToExtract: { gid: number, keyName: string }[] }) {
