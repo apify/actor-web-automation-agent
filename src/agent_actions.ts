@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { shrinkHtmlForWebAutomation, tagAllElementsOnPage } from './shrink_html.js';
 import { HTML_CURRENT_PAGE_PREFIX, UNIQUE_ID_ATTRIBUTE } from './consts.js';
 import { maybeShortsTextByTokenLength } from './tokens.js';
-import { webAgentLog } from './utils.js';
+import { webAgentLog, keyValueArrayToObject } from './utils.js';
 
 interface AgentBrowserContext {
     page: Page;
@@ -127,17 +127,39 @@ export async function extractData(context: AgentBrowserContext, { attributesToEx
     return `Extracted JSON data from page: ${JSON.stringify(extractedData)}`;
 }
 
+export async function pushToDataset(_: AgentBrowserContext, { objects }: { objects: any[] }) {
+    webAgentLog.info('Calling push to dataset', { objects });
+    // NOTE: For some reason passing the object directly to as function param did not work.
+    const items: any[] = [];
+    objects.forEach((object) => {
+        const item = keyValueArrayToObject(object);
+        items.push(item);
+    });
+    await Actor.pushData(items);
+    webAgentLog.info('Pushed to dataset!', { items });
+    return 'Pushed to dataset.';
+}
+
 export async function saveOutput(_: AgentBrowserContext, { object }: { object: { key: string, value: string }[] }) {
     webAgentLog.info('Calling save output', { object });
     // NOTE: For some reason passing the object directly to as function param did not work.
-    const data = {};
-    object.forEach(({ key, value }) => {
-        // @ts-ignore
-        data[key] = value;
-    });
+    const data = keyValueArrayToObject(object);
     await Actor.setValue('OUTPUT', data);
     webAgentLog.info('Output saved!', { data });
-    return 'Output saved, you can finish the task now.';
+    return 'Output saved';
+}
+
+export async function captureAndSaveScreenshot(context: AgentBrowserContext, { filename, saveHtml }: { filename?: string, saveHtml?: boolean }) {
+    webAgentLog.info('Calling capture and save screenshot', { filename, saveHtml });
+    const { page } = context;
+    const key = filename || 'screenshot';
+    const kvs = await Actor.openKeyValueStore();
+    await utils.puppeteer.saveSnapshot(page, { key, saveHtml });
+    webAgentLog.info(`Screenshot saved, you can check it ${kvs.getPublicUrl(key)}.jpeg .`, {
+        screenshotUrl: `${kvs.getPublicUrl(key)}.jpg`,
+        htmlUrl: saveHtml && `${kvs.getPublicUrl(key)}.html`,
+    });
+    return 'Screenshot saved';
 }
 
 export const ACTIONS = {
@@ -196,7 +218,28 @@ export const ACTIONS = {
         }),
         action: saveOutput,
     },
-    // TODO: Action to save to dataset
+    SAVE_TO_DATASET: {
+        name: 'save_objects_to_dataset',
+        description: 'Saves one or multiple object to the dataset',
+        parameters: z.object({
+            objects: z.array(
+                z.array(z.object({
+                    key: z.string().describe('Key of the object to save to dataset'),
+                    value: z.string().describe('The value of the object to save to dataset'),
+                })).describe('The key value pair of object to save to dataset'),
+            ).describe('The list of objects to save to dataset'),
+        }),
+        action: pushToDataset,
+    },
+    CAPTURE_AND_SAVE_SCREENSHOT: {
+        name: 'capture_and_save_screenshot',
+        description: 'Captures and saves a screenshot of the current page',
+        parameters: z.object({
+            filename: z.string().optional().describe('The filename of the screenshot without extension'),
+            saveHtml: z.boolean().optional().describe('Whether to save the HTML of the page'),
+        }),
+        action: captureAndSaveScreenshot,
+    },
 };
 
 export const ACTION_LIST = Object.values(ACTIONS);

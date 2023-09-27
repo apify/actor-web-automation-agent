@@ -1,0 +1,4 @@
+{
+    "startUrl": "https://apify.com/",
+    "instructions": "Go to the pricing page, extract the cheapest pricing plan information, and save it into output."
+}
