@@ -114,12 +114,11 @@ export async function fillForm(context: AgentBrowserContext, { formData }: { for
 export async function extractData(context: AgentBrowserContext, { attributesToExtract }: { attributesToExtract: { gid: number, keyName: string }[] }) {
     webAgentLog.info('Calling extracting data from page', { attributesToExtract });
     const { page } = context;
-    const extractedData = {};
+    const extractedData: Record<string, string | null> = {};
     for (const { gid, keyName } of attributesToExtract) {
         const element = await page.$(`[${UNIQUE_ID_ATTRIBUTE}="${gid}"]`);
         if (element) {
             const value = await page.evaluate((el) => el.textContent, element);
-            // @ts-ignore
             extractedData[keyName] = value && value.trim();
         }
     }
