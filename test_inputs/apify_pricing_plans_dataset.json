@@ -1,0 +1,4 @@
+{
+  "startUrl": "https://apify.com/",
+  "instructions": "Go to the pricing page, extract information about all pricing plans, and save it into dataset."
+}

@@ -117,7 +117,7 @@ const finalInstructions = startUrl
     : instructions;
 webAgentLog.info(`Stating agent with instructions: ${finalInstructions}`);
 const result = await executor.run(finalInstructions);
-webAgentLog.info(`Agent finished it's work.`);
+webAgentLog.info(`Agent finished its work.`);
 webAgentLog.info(result);
 
 // Wait for 10 seconds to see the final page in live view.
