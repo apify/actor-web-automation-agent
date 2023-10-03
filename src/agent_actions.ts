@@ -34,7 +34,7 @@ export async function goToUrl(context: AgentBrowserContext, { url }: { url: stri
     return maybeShortsTextByTokenLength(`Previous action was: go_to_url, ${HTML_CURRENT_PAGE_PREFIX} ${minHtml}`, 10000);
 }
 
-export async function clickElement(page: Page, element: ElementHandle) {
+export async function betterClick(page: Page, element: ElementHandle) {
     try {
         await Promise.all([
             // NOTE: Pptr click is not working for some reason for non visible elements,
@@ -48,25 +48,26 @@ export async function clickElement(page: Page, element: ElementHandle) {
     }
 }
 
-export async function clickLink(context: AgentBrowserContext, { text, gid }: { text: string, gid: number }) {
-    webAgentLog.info('Calling clicking on link', { text, gid });
+export async function clickElement(context: AgentBrowserContext, { text, gid, tagName }: { text: string, gid: number, tagName?: string }) {
+    tagName = tagName || 'a';
+    webAgentLog.info('Calling clicking on link', { text, gid, tagName });
     const { page } = context;
     let elementFoundAndClicked = false;
     let linkFoundByGidSelector = false;
     if (gid) {
-        const linkHtmlSelector = `a[gid="${gid}"]`;
+        const linkHtmlSelector = `${tagName}[gid="${gid}"]`;
         const link = await page.$(linkHtmlSelector);
         if (link) {
-            await clickElement(page, link);
+            await betterClick(page, link);
             elementFoundAndClicked = true;
             linkFoundByGidSelector = true;
         }
     }
 
     if (!elementFoundAndClicked && text) {
-        const link = await page.$(`a ::-p-text(${text})`);
+        const link = await page.$(`${tagName} ::-p-text(${text})`);
         if (link) {
-            await clickElement(page, link);
+            await betterClick(page, link);
             elementFoundAndClicked = true;
         }
     }
@@ -171,17 +172,18 @@ export const ACTIONS = {
         required: ['url'],
         action: goToUrl,
     },
-    CLICK_LINK: {
-        name: 'click_link',
-        description: 'Clicks a link with the given gid on the page. Note that gid is required and'
+    CLICK_ELEMENT: {
+        name: 'click_element',
+        description: 'Clicks on a element with the given gid on the page. Note that gid is required and'
             + ' you must use the corresponding gid attribute from the page content. '
             + 'Add the text of the link to confirm that you are clicking the right link.',
         parameters: z.object({
-            text: z.string().describe('The text on the link you want to click'),
-            gid: z.number().describe('The gid of the link to click (from the page content)'),
+            tagName: z.string().describe('The tag name of the element to click'),
+            text: z.string().describe('The text on the element you want to click'),
+            gid: z.number().describe('The gid of the element to click (from the page content)'),
         }),
         required: ['text', 'gid'],
-        action: clickLink,
+        action: clickElement,
     },
     FILL_FORM: {
         name: 'fill_form_and_submit',
@@ -205,17 +207,6 @@ export const ACTIONS = {
         }),
         required: ['attributesToExtract'],
         action: extractData,
-    },
-    SAVE_OUTPUT: {
-        name: 'save_object_to_output',
-        description: 'Saves the output in the key-value store',
-        parameters: z.object({
-            object: z.array(z.object({
-                key: z.string().describe('Key of the object to save to output'),
-                value: z.string().describe('The value of the object to save to output'),
-            })).describe('The key value pair of object to save to output'),
-        }),
-        action: saveOutput,
     },
     SAVE_TO_DATASET: {
         name: 'save_objects_to_dataset',
