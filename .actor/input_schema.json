@@ -15,7 +15,24 @@
             "type": "string",
             "description": "Instruction how agent browse the web.",
             "editor": "textarea",
-            "prefill": "Go to the pricing page, extract the cheapest pricing plan information, and save it into output."
+            "prefill": "Go to the pricing page, extract information about all pricing plans, and save it into dataset."
+        },
+        "openaiApiKey": {
+            "title": "OpenAI API key",
+            "type": "string",
+            "description": "The API key for accessing OpenAI. You can get it from <a href='https://platform.openai.com/account/api-keys' target='_blank' rel='noopener'>OpenAI platform</a>.",
+            "editor": "textfield",
+            "isSecret": true
+        },
+        "model": {
+            "title": "GPT model",
+            "type": "string",
+            "description": "Select a GPT model. See <a href='https://platform.openai.com/docs/models/overview' target='_blank' rel='noopener'>models overview</a>. Keep in mind that each model has different pricing and features.",
+            "editor": "select",
+            "default": "gpt-3.5-turbo-16k",
+            "prefill": "gpt-3.5-turbo-16k",
+            "enum": ["gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"],
+            "enumTitles": ["GPT-3.5 Turbo 16k", "GPT-4", "GPT-4 32k"]
         },
         "proxyConfiguration": {
             "sectionCaption": "Proxy configuration",

@@ -28,6 +28,16 @@ This option tells agent how to browse the web. For example, you can send the fol
 
 - "Goto pricing page and get all pricing plans, extract all information about plan and save information about the cheapest pricing plan as output."
 
+### OpenAI API key
+
+The API key for accessing OpenAI. You can get it from <a href='https://platform.openai.com/account/api-keys' target='_blank' rel='noopener'>OpenAI platform</a>.
+
+### GPT Model
+
+The **GPT Model** (`model`) option specifies which GPT model to use.
+You can find more information about the models on the [OpenAI API documentation](https://platform.openai.com/docs/models/overview).
+Keep in mind that each model has different pricing and features.
+
 ### Proxy configuration
 
 The **Proxy configuration** (`proxyConfiguration`) option enables you to set proxies.
