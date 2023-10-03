@@ -17,12 +17,18 @@ const LIVE_VIEW_URL = process.env.ACTOR_WEB_SERVER_URL ? process.env.ACTOR_WEB_S
 // Initialize the Apify SDK
 await Actor.init();
 
-if (!process.env.OPENAI_API_KEY) {
-    await Actor.fail('OPENAI_API_KEY cannot be empty!');
-    throw new Error('OPENAI_API_KEY cannot be empty!');
-}
+const {
+    startUrl,
+    instructions,
+    proxyConfiguration,
+    openaiApiKey,
+    model = 'gpt-3.5-turbo-16k',
+} = await Actor.getInput() as Input;
 
-const { startUrl, instructions, proxyConfiguration } = await Actor.getInput() as Input;
+if (!process.env.OPENAI_API_KEY && !openaiApiKey) {
+    await Actor.fail('You need to set open AI API key in input.');
+    throw new Error('The openai API key cannot be empty!');
+}
 
 log.info('Starting Actor..', { startUrl, instructions });
 
@@ -83,8 +89,8 @@ const tools = ACTION_LIST.map((action) => {
 });
 
 const llm = new ChatOpenAI({
-    openAIApiKey: process.env.OPENAI_API_KEY,
-    modelName: 'gpt-3.5-turbo-16k',
+    openAIApiKey: process.env.OPENAI_API_KEY || openaiApiKey,
+    modelName: model,
     temperature: 0,
 });
 

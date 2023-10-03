@@ -208,6 +208,17 @@ export const ACTIONS = {
         required: ['attributesToExtract'],
         action: extractData,
     },
+    SAVE_OUTPUT: {
+        name: 'save_object_to_output',
+        description: 'Saves the output in the key-value store',
+        parameters: z.object({
+            object: z.array(z.object({
+                key: z.string().describe('Key of the object to save to output'),
+                value: z.string().describe('The value of the object to save to output'),
+            })).describe('The key value pair of object to save to output'),
+        }),
+        action: saveOutput,
+    },
     SAVE_TO_DATASET: {
         name: 'save_objects_to_dataset',
         description: 'Saves one or multiple object to the dataset',
