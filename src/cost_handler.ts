@@ -1,9 +1,15 @@
 import { log } from 'apify';
 import { BaseTracer } from 'langchain/callbacks';
-import { Run } from 'langchain/callbacks/handlers/llmonitor';
+import { BaseRun } from 'langsmith/schemas';
 import { GPT_MODEL_LIST, OpenaiAPICost } from './openai.js';
 
 const openAiCostLog = log.child({ prefix: 'OpenAI' });
+
+export interface Run extends BaseRun {
+    id: string;
+    child_runs: this[];
+    child_execution_order: number;
+}
 
 interface TotalCost {
     usd: number;
