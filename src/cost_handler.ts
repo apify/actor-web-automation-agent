@@ -1,15 +1,9 @@
 import { log } from 'apify';
 import { BaseTracer } from 'langchain/callbacks';
-import { BaseRun } from 'langsmith/schemas';
+import { Run } from 'langsmith/schemas'; // For some reason, this schema comes from langsmith, not langchain. Not sure why.
 import { GPT_MODEL_LIST, OpenaiAPICost } from './openai.js';
 
 const openAiCostLog = log.child({ prefix: 'OpenAI' });
-
-export interface Run extends BaseRun {
-    id: string;
-    child_runs: this[];
-    child_execution_order: number;
-}
 
 interface TotalCost {
     usd: number;
