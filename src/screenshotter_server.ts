@@ -27,6 +27,7 @@ const DUMMY_HTML = `<!DOCTYPE html>
  * Create server which serves screenshots from puppeteer page.
  * Uses this for server live view of the page in Apify live view.
  * This is experimental.
+ * TODO: Use WebSockets instead of refreshing page interval.
  */
 export const createServer = async (page: Page) => {
     const app = express();

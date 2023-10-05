@@ -32,6 +32,7 @@ if (!process.env.OPENAI_API_KEY && !openaiApiKey) {
 
 log.info('Starting Actor..', { startUrl, instructions });
 
+// Backbone of the agent, it will be used to run the agent as initial context.
 const initialContext = {
     role: 'system',
     content: '## OBJECTIVE ##\n'
@@ -106,6 +107,7 @@ const executor = WebAgentExecutor.fromAgentAndTools({
         inputKey: 'input',
         outputKey: 'output',
     }),
+    // NOTE: This clean up the HTML from previous LLM step to do not overflow tokens limit.
     updatePreviousStepMethod: (previousStep: AgentStep) => {
         if (previousStep?.observation) {
             return {

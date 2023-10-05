@@ -19,6 +19,11 @@ export async function tagAllElementsOnPage(page: Page, attributeName: string) {
     }, attributeName);
 }
 
+/**
+ * Remove all elements that are not whitelisted.
+ * @param page
+ * @param options
+ */
 export async function shrinkHtml(page: Page, options: ShrinkHtmlOptions) {
     const { whiteListTags, whiteListAttributes } = options;
     const html = await page.content();

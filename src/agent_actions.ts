@@ -162,6 +162,10 @@ export async function captureAndSaveScreenshot(context: AgentBrowserContext, { f
     return 'Screenshot saved';
 }
 
+/**
+ * List of all actions that can agent can use.
+ * NOTE: The return value from the action function will be used in the next step in LLM flow.
+ */
 export const ACTIONS = {
     GO_TO_URL: {
         name: 'go_to_url',
