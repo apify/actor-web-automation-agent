@@ -49,13 +49,14 @@ export class ConstHandler extends BaseTracer {
             this.totalCost.tokens += tokenUsage.promptTokens + tokenUsage.completionTokens;
             this.totalCost.totalModelCalls++;
             const durationSecs = run.end_time && run.start_time && (run.end_time - run.start_time) / 1000;
-            openAiCostLog.info(`LLM model processed call`, { durationSecs, callCostUSD, totalCostUSD: this.totalCost.usd });
+            openAiCostLog.info(`LLM model call processed`, { durationSecs, callCostUSD, totalCostUSD: this.totalCost.usd });
+            openAiCostLog.debug(`LLM model call details`, { run });
         }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    override onLLMStart(_run: Run) {
-        openAiCostLog.info(`Calling LLM model`);
+    override onLLMStart(run: Run) {
+        openAiCostLog.debug(`Calling LLM model`, run);
     }
 
     getTotalCost() {
