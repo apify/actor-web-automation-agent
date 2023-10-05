@@ -13,7 +13,7 @@
         "instructions": {
             "title": "Instructions for the Web Agent",
             "type": "string",
-            "description": "Instruction how agent browse the web.",
+            "description": "Instruction how agent browse the web and extract the data.",
             "editor": "textarea",
             "prefill": "Go to the pricing page, extract information about all pricing plans, and save it into dataset."
         },

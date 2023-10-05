@@ -14,11 +14,11 @@ interface AgentBrowserContext {
 export async function waitForNavigation(page: Page) {
     try {
         await page.waitForNavigation({
-            timeout: 15000,
+            timeout: 5000,
             waitUntil: 'load',
         });
     } catch (error: any) {
-        webAgentLog.warning('waitForNavigation failed', error);
+        webAgentLog.debug('waitForNavigation failed', error);
     }
 }
 
