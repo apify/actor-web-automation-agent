@@ -4,12 +4,12 @@
 
 The agent using natural language instructions to browse web and extract data.
 
-## How does Extended GPT Scraper work?
+## How does Web Automation Agent work?
 
 The Web Automation Agent is a tool that allows you to browse the web and extract data from websites using natural language instructions.
-It uses generative AI from [OpenAI API](https://openai.com/) to generate actions which should be process.
+It uses large language models from [OpenAI API](https://openai.com/) to generate actions which should be performed.
 
-The agent have access to set of actions that can process:
+The agent has access to a set of actions that can process:
 
 * Go to URL
 * Click on element
@@ -21,12 +21,12 @@ The agent have access to set of actions that can process:
 
 ## How much does it cost?
 
-There are two costs associated with using agent.
+The total cost for the agent usage is calculated based on costs for the LLMs and for the browser runtime.
 
 ## Cost of the OpenAI API
 You can find the cost of the OpenAI API on the [OpenAI pricing page](https://openai.com/pricing).
 The cost depends on the model you are using and the action browser process. The cost is calculated based on the number of tokens used.
-You can see these cost in the log of the actor run.
+You can see the cost in the log of the actor run.
 
 ## Cost of the running browser
 The agent uses a headless browser running in Actor. The cost of the browser is based on the amount of time it takes to run the agent.
@@ -47,7 +47,7 @@ https://apify.com/
 
 ### Instructions
 
-Goto pricing page and get all pricing plans, extract all information about plan and save information about the cheapest pricing plan as output.
+Go to pricing page and get all pricing plans, extract all information about plans and save information about the cheapest pricing plan as output.
 
 ## Input configuration
 
@@ -61,7 +61,7 @@ The **Start URL** (`startUrl`) field represents the initial page URL that the Ac
 
 ### Instructions
 
-This option tells agent how to browse the web.
+This option tells the agent how to browse the web.
 
 ### OpenAI API key
 
@@ -70,7 +70,7 @@ The API key for accessing OpenAI. You can get it from <a href='https://platform.
 ### GPT Model
 
 The **GPT Model** (`model`) option specifies which GPT model to use.
-You can find more information about the models on the [OpenAI API documentation](https://platform.openai.com/docs/models/overview).
+You can find more information about the models in the [OpenAI API documentation](https://platform.openai.com/docs/models/overview).
 Keep in mind that each model has different pricing and features.
 
 ### OpenAI API key

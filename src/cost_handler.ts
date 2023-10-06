@@ -11,7 +11,7 @@ interface TotalCost {
     totalModelCalls: number;
 }
 
-export class ConstHandler extends BaseTracer {
+export class CostHandler extends BaseTracer {
     name: string;
     modelName: string;
     modelCost: OpenaiAPICost;
