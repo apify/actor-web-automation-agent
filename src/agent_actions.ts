@@ -119,14 +119,12 @@ export async function extractData(context: AgentBrowserContext, { attributesToEx
     for (const { gid, keyName } of attributesToExtract) {
         const element = await page.$(`[${UNIQUE_ID_ATTRIBUTE}="${gid}"]`);
         if (element) {
-            const textContent = await page.evaluate((el) => el.textContent, element);
-            extractedData[keyName] = textContent && textContent.trim();
+            const value = await page.evaluate((el) => el.textContent, element);
+            extractedData[keyName] = value && value.trim();
         }
     }
     webAgentLog.info('Data were extracted from page', { extractedData });
-    await tagAllElementsOnPage(page, UNIQUE_ID_ATTRIBUTE);
-    const minHtml = await shrinkHtmlForWebAutomation(page);
-    return `Extracted JSON data from page, check if data are correct if not fix them: ${JSON.stringify(extractedData)}, ${HTML_CURRENT_PAGE_PREFIX} ${minHtml}`;
+    return `Extracted JSON data from page: ${JSON.stringify(extractedData)}`;
 }
 
 export async function pushToDataset(_: AgentBrowserContext, { objects }: { objects: any[] }) {
