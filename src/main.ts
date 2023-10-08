@@ -11,6 +11,7 @@ import { ACTION_LIST } from './agent_actions.js';
 import { createServer } from './screenshotter_server.js';
 import { webAgentLog } from './utils.js';
 import { HTML_CURRENT_PAGE_PREFIX } from './consts.js';
+import { CostHandler } from './cost_handler.js';
 
 const LIVE_VIEW_URL = process.env.ACTOR_WEB_SERVER_URL ? process.env.ACTOR_WEB_SERVER_URL : 'http://localhost:4000';
 
@@ -89,10 +90,14 @@ const tools = ACTION_LIST.map((action) => {
     });
 });
 
+const costHandler = new CostHandler(model);
 const llm = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY || openaiApiKey,
     modelName: model,
     temperature: 0,
+    callbacks: [
+        costHandler,
+    ],
 });
 
 const executor = WebAgentExecutor.fromAgentAndTools({
@@ -125,7 +130,8 @@ const finalInstructions = startUrl
     : instructions;
 webAgentLog.info(`Stating agent with instructions: ${finalInstructions}`);
 const result = await executor.run(finalInstructions);
-webAgentLog.info(`Agent finished its work.`);
+const costs = costHandler.getTotalCost();
+webAgentLog.info(`Agent finished its work.`, { costUSD: costs.usd });
 webAgentLog.info(result);
 
 // Wait for 10 seconds to see the final page in live view.
