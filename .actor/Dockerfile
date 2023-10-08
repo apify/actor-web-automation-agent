@@ -50,8 +50,6 @@ COPY --from=builder --chown=myuser /home/myuser/dist ./dist
 # for most source file changes.
 COPY --chown=myuser . ./
 
-ENV FFMPEG_PATH=/usr/local/bin/ffmpeg
-
 # Run the image. If you know you won't need headful browsers,
 # you can remove the XVFB start script for a micro perf gain.
 CMD ./start_xvfb_and_run_cmd.sh && npm run start:prod --silent
