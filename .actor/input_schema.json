@@ -34,6 +34,23 @@
             "enum": ["gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"],
             "enumTitles": ["GPT-3.5 Turbo 16k", "GPT-4", "GPT-4 32k"]
         },
+        "loginUsername": {
+            "sectionCaption": "Process sign-in",
+            "sectionDescription": "The agent will sign in to the website if you request to do so. The password is stored securely in the Apify Key-value store and will not be provided to LLM directly.",
+            "title": "Username or email",
+            "type": "string",
+            "description": "Username or email for login.",
+            "editor": "textfield",
+            "prefill": "username"
+        },
+        "loginPassword": {
+            "title": "Password",
+            "type": "string",
+            "description": "Password for login.",
+            "editor": "textfield",
+            "isSecret": true,
+            "prefill": "password"
+        },
         "proxyConfiguration": {
             "sectionCaption": "Proxy configuration",
             "title": "Proxy configuration",
