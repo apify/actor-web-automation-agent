@@ -7,8 +7,6 @@ USER root
 
 RUN apt-get update && apt-get install -y ffmpeg
 
-USER myuser
-
 # Copy just package.json and package-lock.json
 # to speed up the build using Docker layer cache.
 COPY --chown=myuser package*.json ./
@@ -52,7 +50,7 @@ COPY --from=builder --chown=myuser /home/myuser/dist ./dist
 # for most source file changes.
 COPY --chown=myuser . ./
 
-ENV FFMPEG_PATH=/usr/bin/ffmpeg
+ENV FFMPEG_PATH=/usr/local/bin/ffmpeg
 
 # Run the image. If you know you won't need headful browsers,
 # you can remove the XVFB start script for a micro perf gain.
