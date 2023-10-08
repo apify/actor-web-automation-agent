@@ -90,6 +90,7 @@ const recorder = new PuppeteerScreenRecorder(page, {
     autopad: {
         color: 'black',
     },
+    ffmpeg_Path: process.env.FFMPEG_PATH || undefined,
 });
 await recorder.start(RECORDING_PATH);
 
