@@ -200,18 +200,20 @@ export const ACTIONS = {
         }),
         action: fillForm,
     },
-    EXTRACT_DATA: {
-        name: 'extract_data',
-        description: 'Extract data from HTML page content',
-        parameters: z.object({
-            attributesToExtract: z.array(z.object({
-                gid: z.number().int().describe('The gid HTML attribute from the content to extract text from'),
-                keyName: z.string().describe('The name of the key'),
-            })).describe('The list of gid keys of the elements gid attributes to extract text from (from the page content)'),
-        }),
-        required: ['attributesToExtract'],
-        action: extractData,
-    },
+    // TODO: It turns out that this is not needed, because the data can be extracted from the page content using LLM directly.
+    // It works better than LLM just tell which data to extract. But need to investigate more.
+    // EXTRACT_DATA: {
+    //     name: 'extract_data',
+    //     description: 'Extract data from HTML page content',
+    //     parameters: z.object({
+    //         attributesToExtract: z.array(z.object({
+    //             gid: z.number().int().describe('The gid HTML attribute from the HTML, which contains the text to extract'),
+    //             keyName: z.string().describe('The name of the key'),
+    //         })).describe('The list of gid keys of the elements gid attributes to extract text from (from the page content)'),
+    //     }),
+    //     required: ['attributesToExtract'],
+    //     action: extractData,
+    // },
     SAVE_OUTPUT: {
         name: 'save_object_to_output',
         description: 'Saves the output in the key-value store',
