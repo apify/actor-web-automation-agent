@@ -9,6 +9,7 @@ export const WHITELIST_TAGS_WEB_AUTOMATION = [
     'table', 'thead', 'tbody', 'tr', 'th', 'td',
     'a', 'button',
     'form', 'input', 'label', 'select', 'option', 'textarea',
+    'span', 'ul', 'li', 'ol',
 ];
 
 export const WHITELIST_ATTRIBUTES_WEB_AUTOMATION = [

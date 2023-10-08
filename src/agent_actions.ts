@@ -119,12 +119,14 @@ export async function extractData(context: AgentBrowserContext, { attributesToEx
     for (const { gid, keyName } of attributesToExtract) {
         const element = await page.$(`[${UNIQUE_ID_ATTRIBUTE}="${gid}"]`);
         if (element) {
-            const value = await page.evaluate((el) => el.textContent, element);
-            extractedData[keyName] = value && value.trim();
+            const textContent = await page.evaluate((el) => el.textContent, element);
+            extractedData[keyName] = textContent && textContent.trim();
         }
     }
     webAgentLog.info('Data were extracted from page', { extractedData });
-    return `Extracted JSON data from page: ${JSON.stringify(extractedData)}`;
+    await tagAllElementsOnPage(page, UNIQUE_ID_ATTRIBUTE);
+    const minHtml = await shrinkHtmlForWebAutomation(page);
+    return `Extracted JSON data from page, check if data are correct if not fix them: ${JSON.stringify(extractedData)}, ${HTML_CURRENT_PAGE_PREFIX} ${minHtml}`;
 }
 
 export async function pushToDataset(_: AgentBrowserContext, { objects }: { objects: any[] }) {
@@ -200,18 +202,20 @@ export const ACTIONS = {
         }),
         action: fillForm,
     },
-    EXTRACT_DATA: {
-        name: 'extract_data',
-        description: 'Extract data from HTML page content',
-        parameters: z.object({
-            attributesToExtract: z.array(z.object({
-                gid: z.number().int().describe('The gid HTML attribute from the content to extract text from'),
-                keyName: z.string().describe('The name of the key'),
-            })).describe('The list of gid keys of the elements gid attributes to extract text from (from the page content)'),
-        }),
-        required: ['attributesToExtract'],
-        action: extractData,
-    },
+    // TODO: It turns out that this is not needed, because the data can be extracted from the page content using LLM directly.
+    // It works better than LLM just tell which data to extract. But need to investigate more.
+    // EXTRACT_DATA: {
+    //     name: 'extract_data',
+    //     description: 'Extract data from HTML page content',
+    //     parameters: z.object({
+    //         attributesToExtract: z.array(z.object({
+    //             gid: z.number().int().describe('The gid HTML attribute from the HTML, which contains the text to extract'),
+    //             keyName: z.string().describe('The name of the key'),
+    //         })).describe('The list of gid keys of the elements gid attributes to extract text from (from the page content)'),
+    //     }),
+    //     required: ['attributesToExtract'],
+    //     action: extractData,
+    // },
     SAVE_OUTPUT: {
         name: 'save_object_to_output',
         description: 'Saves the output in the key-value store',
