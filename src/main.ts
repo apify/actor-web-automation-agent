@@ -156,7 +156,7 @@ const costs = costHandler.getTotalCost();
 webAgentLog.info(`Agent finished its work.`, { costUSD: costs.usd });
 webAgentLog.info(result);
 
-// Wait for 5 seconds to see the final page in live view.
+// Wait for 3 seconds to see the final page in live view.
 await sleep(3000);
 
 // Clean up
