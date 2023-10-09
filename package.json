@@ -13,6 +13,7 @@
 		"langchain": "^0.0.147",
 		"langsmith": "^0.0.41",
 		"puppeteer": "*",
+		"puppeteer-screen-recorder": "^2.1.2",
 		"zod": "^3.22.2"
 	},
 	"devDependencies": {
