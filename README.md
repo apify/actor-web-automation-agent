@@ -1,91 +1,82 @@
-# Web Automation Agent
+> The Agent is currently in experimental stage. It is not recommended to use it in production. Please forward all feedback to issues.
+> 
 
-> The Agent is currently in **experimental** stage. It is not recommended to use it in production. Please forward all feedback to issues.
 
-The agent using natural language instructions to browse web and extract data.
 
-## How does Web Automation Agent work?
+## 😎 How does AI Web Agent work?
 
-The Web Automation Agent is a tool that allows you to browse the web and extract data from websites using natural language instructions.
-It uses large language models from [OpenAI API](https://openai.com/) to generate actions which should be performed.
+The AI Web Agent is a tool that allows you to browse the web and extract data from websites using simple, natural language instructions. It combines the powers of the Apify platform and large language models from [OpenAI API](https://openai.com/) to generate actions that should be performed.
 
-The agent has access to a set of actions that can process:
+You can use AI Web Agent to **automate any action on the web:** 
 
-* Go to URL
-* Click on element
-* Fill and submit form
-* Extract data from the page
-* Save data to output
-* Save data to dataset
-* Take and save screenshot
+🌐 Go to URL
 
-## How much does it cost?
+🖱️ Click on element
 
-The total cost for the agent usage is calculated based on costs for the LLMs and for the browser runtime.
+📝 Fill and submit forms
 
-## Cost of the OpenAI API
-You can find the cost of the OpenAI API on the [OpenAI pricing page](https://openai.com/pricing).
-The cost depends on the model you are using and the action browser process. The cost is calculated based on the number of tokens used.
-You can see the cost in the log of the actor run.
+📦 Extract data from the page
 
-## Cost of the running browser
-The agent uses a headless browser running in Actor. The cost of the browser is based on the amount of time it takes to run the agent.
-You can find information about the cost on the [pricing page](https://apify.com/pricing).
+💾 Save data to output
 
-## How to use Web Automation Agent
+📊 Save data to dataset
 
-To get started with Web Agent, you need to
-1. Set up the page where you want to start automation using [**Start URL**](#start-url).
-2. Set up [**Instructions**](#instructions) on how the agent should browse the web.
-3. Set up [**OpenAI API key**](#openai-api-key). You can get it from <a href='https://platform.openai.com/account/api-keys' target='_blank' rel='noopener'>OpenAI platform</a>.
+📸 Take and save a screenshot💸
 
-For example, to browse https://apify.com/ find pricing page and get the cheapest pricing plan you can use:
+## 📚 How to use AI Web Agent?
 
-### Start URL
+AI Web Agent was designed for an easy start even if you've never tried automating tasks on the web before. To get started, you need to:
 
-https://apify.com/
+1. **Add page URL** that you want the Web Agent to start with.
+2. Provide **Instructions** on what the Web Agent should do while on that page. Use simple and straightforward language.
+3. Set up **OpenAI API key**. You can get it from <a href='https://platform.openai.com/account/api-keys' target='_blank' rel='noopener'>OpenAI platform</a>.
+4. Choose **GPT Model** that decyphers your prompt to the Web Agent: GPT-3.5 Turbo 16k, GPT-4, GPT-4 32k.
+5. Click **Start**.
 
-### Instructions
+For example, to browse a website such as [https://apify.com/](https://apify.com/) and get the cheapest pricing plan, you can use the following instructions:
 
-Go to pricing page and get all pricing plans, extract all information about plans and save information about the cheapest pricing plan as output.
+<img width="75%" src="https://github.com/apify-projects/actor-readme-images/blob/master/AI%20Web%20Agent%20full%20input.png?raw=true" />
 
-## Input configuration
+## ⬇️ Input
 
-Web Automation Agent accepts following configuration settings.
-These can be entered either manually in the user interface in [Apify Console](https://console.apify.com)
-or programmatically in a JSON object using the [Apify API](https://apify.com/docs/api/v2#/reference/actors/run-collection/run-actor).
+AI Web Agent accepts the following configuration settings:
 
-### Start URL
+**Start URL**
 
-The **Start URL** (`startUrl`) field represents the initial page URL that the Actor will visit.
+The **Start URL** (`startUrl`) field represents the initial page URL that the Agent will visit.
 
-### Instructions
+**Instructions**
 
-This option tells the agent how to browse the web.
+This field instructs the Web Agent how to browse the web.
 
-### OpenAI API key
+**OpenAI API key**
 
 The API key for accessing OpenAI. You can get it from <a href='https://platform.openai.com/account/api-keys' target='_blank' rel='noopener'>OpenAI platform</a>.
 
-### GPT Model
+**GPT Model**
 
-The **GPT Model** (`model`) option specifies which GPT model to use.
-You can find more information about the models in the [OpenAI API documentation](https://platform.openai.com/docs/models/overview).
-Keep in mind that each model has different pricing and features.
+The **GPT Model** (`model`) option specifies which GPT model to use. You can find more information about the models on the [OpenAI API documentation](https://platform.openai.com/docs/models/overview). Keep in mind that each GPT model has different pricing and features.
 
-### OpenAI API key
+**Proxy configuration**
 
-The API key for accessing OpenAI. You can get it from <a href='https://platform.openai.com/account/api-keys' target='_blank' rel='noopener'>OpenAI platform</a>.
+The **Proxy configuration** (`proxyConfiguration`) option enables you to set proxies. The Web Agent will use these to prevent getting blocked by target websites. You can use both [Apify Proxy](https://apify.com/proxy) and custom HTTP or SOCKS5 proxy servers.
 
-### GPT Model
+You can enter these either directly in [Apify Console](https://console.apify.com/) or programmatically in a JSON object using the [Apify API](https://apify.com/docs/api/v2#/reference/actors/run-collection/run-actor). Watch [this video](https://www.youtube.com/watch?v=ViYYDHSBAKM) to learn how get your data via the cURL command and with both Apify's API clients (Python and Node.js).  
 
-The **GPT Model** (`model`) option specifies which GPT model to use.
-You can find more information about the models on the [OpenAI API documentation](https://platform.openai.com/docs/models/overview).
-Keep in mind that each model has different pricing and features.
+[AI Web Agent API](https://www.youtube.com/watch?v=ViYYDHSBAKM)
 
-### Proxy configuration
+## ⬇️ Output
 
-The **Proxy configuration** (`proxyConfiguration`) option enables you to set proxies.
-The scraper will use these to prevent its detection by target websites.
-You can use both [Apify Proxy](https://apify.com/proxy) and custom HTTP or SOCKS5 proxy servers.
+You can find the results of the run in the **Storage tab → Key-value store** under the `OUTPUT` key. You can also view the recorded Web Agent's browsing session under`recording.mp4`.
 
+## 💸 How much does it cost to use AI Web Agent?
+
+Your total cost will be calculated based on **combined costs for running OpenAI’s LLMs and browser runtime**.
+
+**Cost of the OpenAI API**
+
+The cost depends on the model you are using and the action browser process. The cost is calculated based on the number of tokens used. You can see the cost in the log of the Actor run. You can find the cost of the OpenAI API on the [OpenAI pricing page](https://openai.com/pricing). 
+
+**Cost of the running browser**
+
+The Web Agent uses a headless browser. The cost of the browser is based on the amount of time it takes to run the Agent. You can find information about the cost on the [pricing page](https://apify.com/pricing).
