@@ -1,4 +1,4 @@
-> The Agent is currently in experimental stage. It is not recommended to use it in production. Please forward all feedback to issues.
+> This Actor is a work in progress. Got feedback? Head to the [Issues tab](https://console.apify.com/actors/dLXH5Ia8gLsNjieKV/issues) in Console.
 > 
 
 
