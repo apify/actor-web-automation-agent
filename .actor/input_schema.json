@@ -44,5 +44,5 @@
             "editor": "proxy"
         }
     },
-    "required": ["instructions"]
+    "required": ["instructions", "openaiApiKey"]
 }
