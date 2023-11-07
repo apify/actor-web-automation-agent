@@ -150,7 +150,7 @@ const executor = WebAgentExecutor.fromAgentAndTools({
 const finalInstructions = startUrl
     ? `Open url ${startUrl} and continue with ${instructions}`
     : instructions;
-webAgentLog.info(`Stating agent with instructions: ${finalInstructions}`);
+webAgentLog.info(`Starting agent with instructions: ${finalInstructions}`);
 const result = await executor.run(finalInstructions);
 const costs = costHandler.getTotalCost();
 webAgentLog.info(`Agent finished its work.`, { costUSD: costs.usd });
