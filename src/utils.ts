@@ -1,6 +1,6 @@
 import { log } from 'apify';
 
-export const webAgentLog = log.child({ prefix: 'WebAutomationAgent' });
+export const webAgentLog = log.child({ prefix: 'AI Web Agent' });
 
 export function keyValueArrayToObject(keyValueArray: { key: string, value: string }[]) {
     const object: Record<string, string> = {};
