@@ -1,14 +1,14 @@
-import {Page} from "puppeteer";
+import { Page } from 'puppeteer';
 import { describe, expect, test } from '@jest/globals';
-import { shrinkHtmlForWebAutomation, tagAllElementsOnPage } from '../src/shrink_html.js';
+import { shrinkHtmlForWebAutomation } from '../src/shrink_html.js';
 
 const createPage = (html: string) => {
     return {
         async content() {
-            return html
-        }
-    } as Page
-}
+            return html;
+        },
+    } as Page;
+};
 
 const DUMMY_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -22,7 +22,7 @@ const DUMMY_HTML = `<!DOCTYPE html>
 <body>
    <img src="test.jpg" />
 </body>
-</html>`
+</html>`;
 
 describe('shrink HTML', () => {
     test('shrinkHtmlForWebAutomation can be run twice', async () => {
@@ -46,8 +46,8 @@ describe('shrink HTML', () => {
    <img src="test.jpg" />
    <a href="https://book.agenda.ch/services?companyId=6505"><span><font><font>See you online!</font></font></span></a>
 </body>
-</html>`
-        const expectedHtml = `<!DOCTYPE html><html lang="en"><title>Page live view</title><body><a href="https://book.agenda.ch/services?companyId=6505"><span>See you online!</span></a></body></html>`
+</html>`;
+        const expectedHtml = `<!DOCTYPE html><html lang="en"><title>Page live view</title><body><a href="https://book.agenda.ch/services?companyId=6505"><span>See you online!</span></a></body></html>`;
         const shrinkedHtml = await shrinkHtmlForWebAutomation(createPage(html));
         expect(shrinkedHtml).toEqual(expectedHtml);
     });
