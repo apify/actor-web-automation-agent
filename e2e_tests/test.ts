@@ -2,7 +2,6 @@ import 'zx/globals';
 import fs from 'fs/promises';
 import { TEST_CASES } from './agent_test_cases.js';
 
-await $`fnm use`;
 for (const c of TEST_CASES) {
     const input = {
         startUrl: c.startUrl,
