@@ -6,17 +6,17 @@ import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { AgentStep } from 'langchain/schema';
 import { DynamicStructuredTool } from 'langchain/tools';
 import { BufferMemory } from 'langchain/memory';
-import { PuppeteerScreenRecorder } from 'puppeteer-screen-recorder';
+//import { PuppeteerScreenRecorder } from 'puppeteer-screen-recorder';
 import { WebAgentExecutor } from './agent_executor.js';
 import { Input } from './input.js';
 import { ACTION_LIST } from './agent_actions.js';
-import { createServer } from './screenshotter_server.js';
+//import { createServer } from './screenshotter_server.js';
 import { webAgentLog } from './utils.js';
 import { HTML_CURRENT_PAGE_PREFIX } from './consts.js';
 import { CostHandler } from './cost_handler.js';
 
-const LIVE_VIEW_URL = process.env.ACTOR_WEB_SERVER_URL ? process.env.ACTOR_WEB_SERVER_URL : 'http://localhost:4000';
-const RECORDING_PATH = 'recording.mp4';
+// const LIVE_VIEW_URL = process.env.ACTOR_WEB_SERVER_URL ? process.env.ACTOR_WEB_SERVER_URL : 'http://localhost:4000';
+// const RECORDING_PATH = 'recording.mp4';
 
 // Initialize the Apify SDK
 await Actor.init();
@@ -76,28 +76,28 @@ const browser = await launchPuppeteer({
 const page = await browser.newPage();
 log.info('Browser opened');
 
-log.info('Start recording');
-const recorder = new PuppeteerScreenRecorder(page, {
-    fps: 30,
-    videoFrame: {
-        width: 1920,
-        height: 1080,
-    },
-    videoCrf: 18,
-    videoCodec: 'libx264',
-    videoPreset: 'ultrafast',
-    videoBitrate: 1000,
-    autopad: {
-        color: 'black',
-    },
-    ffmpeg_Path: process.env.FFMPEG_PATH || undefined,
-});
-await recorder.start(RECORDING_PATH);
+// log.info('Start recording');
+// const recorder = new PuppeteerScreenRecorder(page, {
+//     fps: 30,
+//     videoFrame: {
+//         width: 1920,
+//         height: 1080,
+//     },
+//     videoCrf: 18,
+//     videoCodec: 'libx264',
+//     videoPreset: 'ultrafast',
+//     videoBitrate: 1000,
+//     autopad: {
+//         color: 'black',
+//     },
+//     ffmpeg_Path: process.env.FFMPEG_PATH || undefined,
+// });
+// await recorder.start(RECORDING_PATH);
 
 // Server which serves screenshots
 // TODO: If recording works, we can steam is into live view instead of screenshots.
-const server = await createServer(page);
-log.info(`Live view started, you can see Web Automation Agent in action on in Live View tab or ${LIVE_VIEW_URL}`);
+//const server = await createServer(page);
+//log.info(`Live view started, you can see Web Automation Agent in action on in Live View tab or ${LIVE_VIEW_URL}`);
 
 const tools = ACTION_LIST.map((action) => {
     // TODO: Better to create a class for each action to inherit from DynamicStructuredTool
@@ -157,23 +157,23 @@ webAgentLog.info(`Agent finished its work.`, { costUSD: costs.usd });
 webAgentLog.info(result);
 
 // Wait for 3 seconds to see the final page in live view.
-await sleep(3000);
+//await sleep(3000);
 
 // Clean up
-await server.destroy();
-await recorder.stop();
+//await server.destroy();
+//await recorder.stop();
 await browser.close();
+await Actor.exit();
 
 // Save recording to key-value store
-try {
-    // TODO: Use stream to upload !!!
-    const store = await Actor.openKeyValueStore();
-    const recordingBuffer = await readFile(RECORDING_PATH);
-    await store.setValue('recording.mp4', recordingBuffer, { contentType: 'video/mp4' });
-    log.info(`Recording finished, you can see it or download it in on ${store.getPublicUrl(RECORDING_PATH)}`);
-} catch (err) {
-    log.error('Error while saving recording to key-value store', { err });
-}
+// try {
+//     // TODO: Use stream to upload !!!
+//     const store = await Actor.openKeyValueStore();
+//     const recordingBuffer = await readFile(RECORDING_PATH);
+//     await store.setValue('recording.mp4', recordingBuffer, { contentType: 'video/mp4' });
+//     log.info(`Recording finished, you can see it or download it in on ${store.getPublicUrl(RECORDING_PATH)}`);
+// } catch (err) {
+//     log.error('Error while saving recording to key-value store', { err });
+// }
 
-log.info('Actor finished');
-await Actor.exit();
+// log.info('Actor finished');
