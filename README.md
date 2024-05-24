@@ -1,4 +1,4 @@
-> This Actor is a work in progress. Got feedback? Head to the [Issues tab](https://console.apify.com/actors/dLXH5Ia8gLsNjieKV/issues) in Console.
+> ⚠️ The AI Web Agent is an experimental project and is currently not actively maintained. While we have plans for long-term improvements, these will not be implemented in the near future. We welcome and appreciate any contributions, including pull requests or documentation enhancements.
 > 
 
 
