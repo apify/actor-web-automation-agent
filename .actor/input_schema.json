@@ -31,8 +31,8 @@
             "editor": "select",
             "default": "gpt-3.5-turbo-16k",
             "prefill": "gpt-3.5-turbo-16k",
-            "enum": ["gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k", "gpt-4-1106-preview"],
-            "enumTitles": ["GPT-3.5 Turbo 16k", "GPT-4", "GPT-4 32k", "GPT-4 106k"]
+            "enum": ["gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k", "gpt-4-1106-preview","gpt-4o"],
+            "enumTitles": ["GPT-3.5 Turbo 16k", "GPT-4", "GPT-4 32k", "GPT-4 106k","gpt-4o"]
         },
         "proxyConfiguration": {
             "sectionCaption": "Proxy configuration",

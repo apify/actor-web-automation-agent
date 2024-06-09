@@ -52,4 +52,13 @@ export const GPT_MODEL_LIST: {[key: string]: GPTModelConfig} = {
             output: 0.03,
         },
     },
+    'gpt-4o': {
+        model: 'gpt-4o',
+        maxTokens: 128000,
+        interface: 'chat',
+        cost: {
+            input: 0.01,
+            output: 0.03,
+        },
+    },
 };
