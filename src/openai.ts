@@ -21,8 +21,8 @@ export const GPT_MODEL_LIST: {[key: string]: GPTModelConfig} = {
         maxTokens: 16384,
         interface: 'chat',
         cost: {
-            input: 0.003,
-            output: 0.004,
+            input: 0.0015,
+            output: 0.002,
         },
     },
     'gpt-4': {
@@ -50,6 +50,42 @@ export const GPT_MODEL_LIST: {[key: string]: GPTModelConfig} = {
         cost: {
             input: 0.01,
             output: 0.03,
+        },
+    },
+    'gpt-4o-mini': {
+        model: 'gpt-4o-mini',
+        maxTokens: 16384,
+        interface: 'chat',
+        cost: {
+            input: 0.00015,
+            output: 0.0006,
+        },
+    },
+    'gpt-4o': {
+        model: 'gpt-4o',
+        maxTokens: 16384,
+        interface: 'chat',
+        cost: {
+            input: 0.0025,
+            output: 0.01,
+        },
+    },
+    'o3-mini': {
+        model: 'o3-mini',
+        maxTokens: 4096,
+        interface: 'chat',
+        cost: {
+            input: 0.0011,
+            output: 0.0044,
+        },
+    },
+    'o1-mini': {
+        model: 'o1-mini',
+        maxTokens: 2048,
+        interface: 'chat',
+        cost: {
+            input: 0.0165,
+            output: 0.066,
         },
     },
 };
