@@ -29,10 +29,9 @@
             "type": "string",
             "description": "Select a GPT model. See <a href='https://platform.openai.com/docs/models/overview' target='_blank' rel='noopener'>models overview</a>. Keep in mind that each model has different pricing and features.",
             "editor": "select",
-            "default": "gpt-3.5-turbo-16k",
-            "prefill": "gpt-3.5-turbo-16k",
-            "enum": ["gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k", "gpt-4-1106-preview"],
-            "enumTitles": ["GPT-3.5 Turbo 16k", "GPT-4", "GPT-4 32k", "GPT-4 106k"]
+            "default": "gpt-4o-mini",
+            "prefill": "gpt-4o-mini",
+            "enum": ["gpt-4o-mini", "gpt-4o", "o3-mini", "o1-mini", "gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k", "gpt-4-1106-preview"]
         },
         "proxyConfiguration": {
             "sectionCaption": "Proxy configuration",

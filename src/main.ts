@@ -26,7 +26,7 @@ const {
     instructions,
     proxyConfiguration,
     openaiApiKey,
-    model = 'gpt-3.5-turbo-16k',
+    model = 'gpt-4o-mini',
 } = await Actor.getInput() as Input;
 
 if (!process.env.OPENAI_API_KEY && !openaiApiKey) {
