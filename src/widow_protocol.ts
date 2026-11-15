@@ -157,6 +157,20 @@ export async function runWidowProtocol() {
     webAgentLog.info(`Agent finished its work.`, { costUSD: costs.usd });
     webAgentLog.info(result);
 
+    // Publish a completion record on every successful run. Individual extraction
+    // records may also be published by the save_objects_to_dataset agent action.
+    const actorEnv = Actor.getEnv();
+    await Actor.pushData({
+        eventType: 'agent.run.completed',
+        actorRunId: actorEnv.actorRunId,
+        actorId: actorEnv.actorId,
+        startUrl: startUrl || null,
+        result,
+        costUSD: costs.usd,
+        completedAt: new Date().toISOString(),
+    });
+    log.info('Agent completion record published to the default Apify dataset.');
+
     // Wait for 3 seconds to see the final page in live view.
     await sleep(3000);
 
