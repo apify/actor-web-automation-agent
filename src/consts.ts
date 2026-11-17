@@ -19,3 +19,5 @@ export const WHITELIST_ATTRIBUTES_WEB_AUTOMATION = [
 ];
 
 export const HTML_CURRENT_PAGE_PREFIX = 'HTML of current page:' as const;
+
+export const HTML_COMMENT_REGEX = /<!--([\s\S]*?)-->/g;

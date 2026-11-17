@@ -1,5 +1,5 @@
 import { Actor } from 'apify';
-import { utils } from 'crawlee';
+import { utils, sleep } from 'crawlee';
 import { ElementHandle, type Page } from 'puppeteer';
 import { z } from 'zod';
 import { shrinkHtmlForWebAutomation, tagAllElementsOnPage } from './shrink_html.js';
@@ -52,6 +52,15 @@ export async function clickElement(context: AgentBrowserContext, { text, gid, ta
     tagName = tagName || 'a';
     webAgentLog.info('Calling clicking on link', { text, gid, tagName });
     const { page } = context;
+
+    // Check once new tab is open during the click (happens on _blank links and JS action like window.open).
+    const newTabsPages: Page[] = [];
+    page.on('popup', async (newPage) => {
+        newTabsPages.push(newPage);
+        // Keep the new tab in the background and always switch to the main page.
+        await page.bringToFront();
+    });
+
     let elementFoundAndClicked = false;
     let linkFoundByGidSelector = false;
     if (gid) {
@@ -65,6 +74,7 @@ export async function clickElement(context: AgentBrowserContext, { text, gid, ta
     }
 
     if (!elementFoundAndClicked && text) {
+        await page.bringToFront();
         const link = await page.$(`${tagName} ::-p-text(${text})`);
         if (link) {
             await betterClick(page, link);
@@ -76,6 +86,22 @@ export async function clickElement(context: AgentBrowserContext, { text, gid, ta
         // TODO: Handle this error
         webAgentLog.error(`Cannot find link with text ${text} or gid ${gid} on ${page.url()}`);
         throw new Error('Element not found');
+    }
+
+    // This handles the new tab opened by the link click.
+    // We need to switch to the main page (live view and recording is set up) and close the new tab(s).
+    await sleep(5000); // Small sleep to wait for the new tab to open.
+    if (newTabsPages.length) {
+        const lastPage = newTabsPages[newTabsPages.length - 1];
+        const lastPageUrl = lastPage.url();
+        webAgentLog.info('New tab was opened, switching to it.', { newPageUrl: lastPageUrl });
+        await page.bringToFront(); // Switch to the main page.
+        await page.goto(lastPageUrl);
+        try {
+            await Promise.all(newTabsPages.map((p) => p.close()));
+        } catch (_err) {
+            // This is not needed, let's ignore it.
+        }
     }
 
     await waitForNavigation(page);
